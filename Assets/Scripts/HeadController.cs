@@ -53,14 +53,26 @@ public class HeadController : MonoBehaviour
 	
 	
 	
-	public void InitializeForNewCharacter()
+	public void InitializeForNewCharacter( Transform avatarTransform )
 	{
 		CameraAnchor cameraAnchor = MiscUtils.FindInChildren( transform.parent.gameObject, "CameraAnchor" ).GetComponent<CameraAnchor>();
-		ovrControllerTransform.parent = cameraAnchor.transform;
-		ovrControllerTransform.localPosition = Vector3.zero;
-		ovrControllerTransform.localRotation = Quaternion.identity;
-		anchorBoneTransform = transform.parent.GetComponent<Animator>().GetBoneTransform ( cameraAnchor.useNeckBone ? HumanBodyBones.Neck
-																													: HumanBodyBones.Head );
+		Transform cameraAnchorTransform = cameraAnchor.transform;
+		anchorBoneTransform = cameraAnchor.GetAnchorTransform();
+		
+		//*** Let the OVRCameraController pivot in a position such that there is no clipping when looking down
+		{
+			Vector3 shoulderPosLocal = cameraAnchor.GetAverageInitialShoulderPos();
+			Vector3 headPosLocal = cameraAnchor.initialHeadPos;
+			float pivotHeightLocal = Mathf.Lerp( shoulderPosLocal.y, headPosLocal.y, 0.2f );
+
+			ovrControllerTransform.parent = avatarTransform;
+			ovrControllerTransform.localPosition = Vector3.up * pivotHeightLocal;
+			ovrControllerTransform.localRotation = Quaternion.identity;
+			ovrCameraController.SetNeckPosition( new Vector3 ( 0, 0, 0 ) );
+			float eyeCenterY = cameraAnchorTransform.position.y - ovrControllerTransform.position.y;
+			float eyeCenterZ = cameraAnchorTransform.localPosition.z * avatarTransform.localScale.z;
+			ovrCameraController.SetEyeCenterPosition( new Vector3 ( 0, eyeCenterY, eyeCenterZ ) );
+		}
 		
 		//*** Set neckCorrectionRotation to compensate for the neck sometimes being rotated relative to the body
 		{

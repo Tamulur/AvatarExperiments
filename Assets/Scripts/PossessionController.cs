@@ -162,7 +162,7 @@ public class PossessionController : MonoBehaviour
 		transform.localPosition = Vector3.zero;
 		transform.localRotation = Quaternion.identity;
 		
-		headController.InitializeForNewCharacter();
+		headController.InitializeForNewCharacter( avatarTransform );
 		handsController.InitializeForNewCharacter();
 		motionController.InitializeForNewCharacter ( avatarGO );
 		

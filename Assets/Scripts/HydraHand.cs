@@ -14,6 +14,7 @@ class HydraHand
         readonly AvatarIKGoal goal;
         readonly SixenseHands hand;
 	
+		CameraAnchor cameraAnchor;
         Transform avatarTransform;
         Animator animator;
 		Vector3 initialLocalPosition;
@@ -28,7 +29,7 @@ class HydraHand
 	
 	public void Deactivate()
 	{
-		oldScale = animator.humanScale;
+		oldScale = cameraAnchor.avatarScale / avatarTransform.localScale.x;
 	}
 	
 	
@@ -42,14 +43,16 @@ class HydraHand
 
 
 	
-	public void InitializeForNewCharacter( Transform avatarTransform, Animator animator)
+	public void InitializeForNewCharacter( Animator animator, CameraAnchor cameraAnchor )
 	{
-		if ( oldScale != 0 )
-			initialLocalPosition *= animator.humanScale / oldScale;
+		avatarTransform = animator.transform;
+		this.animator = animator;
+		this.cameraAnchor = cameraAnchor;
 		
-        this.animator = animator;
-		this.avatarTransform = avatarTransform;
-	}
+		if ( oldScale != 0 )
+			initialLocalPosition *= cameraAnchor.avatarScale / (avatarTransform.localScale.x * oldScale);
+		
+ 	}
 	
 	
 	
@@ -70,35 +73,26 @@ class HydraHand
 	
 	public void ResetHandPosition()
 	{
-		Vector3 shoulderPos = animator.GetBoneTransform( isLeftHand	? HumanBodyBones.LeftUpperArm
-																	: HumanBodyBones.RightUpperArm ).position;
-		Vector3 ellbowPos = animator.GetBoneTransform( isLeftHand	? HumanBodyBones.LeftLowerArm
-																	: HumanBodyBones.RightLowerArm ).position;
-		Vector3 handPos = animator.GetBoneTransform( isLeftHand	? HumanBodyBones.LeftHand
-																: HumanBodyBones.RightHand ).position;
+		Vector3 shoulderPos = avatarTransform.TransformPoint( isLeftHand	? cameraAnchor.initialLeftShoulderPos
+																			: cameraAnchor.initialRightShoulderPos );
+		Vector3 ellbowPos = avatarTransform.TransformPoint( isLeftHand	? cameraAnchor.initialLeftEllbowPos
+																		: cameraAnchor.initialRightEllbowPos );
+		Vector3 handPos = avatarTransform.TransformPoint( isLeftHand	? cameraAnchor.initialLeftHandPos
+																		: cameraAnchor.initialRightHandPos );
 		
 		float upperArmLength = Vector3.Distance( shoulderPos, ellbowPos );
 		float lowerArmLength = Vector3.Distance( ellbowPos, handPos );
 		
 		//*** Calibrate with angled arms
 		{
+			Vector3 right = avatarTransform.right;
+			Vector3 forward = avatarTransform.forward;
 			initialGlobalPosition = shoulderPos +
-									( isLeftHand	? -avatarTransform.right
-													: avatarTransform.right ) * upperArmLength
-									+ avatarTransform.forward * lowerArmLength;
+									( isLeftHand	? -right
+													: right ) * upperArmLength
+									+ forward * lowerArmLength;
 			initialLocalRotation = ( isLeftHand 	? Quaternion.Euler( 0, 0, 90 )
 													: Quaternion.Euler(0, 0, -90));
-		}
-		
-		//*** Calibrate with T-pose: arms stretched to the side
-		// Seems to be worse than angled arms, maybe because the
-		// controllers are too far away from the base.
-		{
-	//			initialGlobalPosition = shoulderPos +
-	//									(hand == SixenseHands.LEFT	? -avatarTransform.right
-	//																: avatarTransform.right ) * (lowerArmLength + upperArmLength);
-	//			initialLocalRotation = (hand == SixenseHands.LEFT 	? Quaternion.Euler( 0, -90, 90 )
-	//																: Quaternion.Euler(0, 90, -90));
 		}
 		
 		initialLocalPosition = avatarTransform.InverseTransformPoint( initialGlobalPosition );

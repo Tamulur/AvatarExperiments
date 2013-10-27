@@ -499,20 +499,30 @@ ModelImporter:
       limit:
         min: {x: -40, y: -40, z: -40}
         max: {x: 40, y: 40, z: 40}
-        value: {x: .225262612, y: 0, z: .112631306}
-        preQ: {x: -7.4505806e-08, y: 1.25169754e-06, z: -.997323394, w: -.0731158555}
-        postQ: {x: -8.94069672e-08, y: 1.25169754e-06, z: -.997323394, w: -.0731158257}
-        length: .281578332
+        value: {x: .128913164, y: 0, z: .0644565821}
+        preQ: {x: 1.49011603e-08, y: -1.31130207e-06, z: .999999821, w: -.000246077747}
+        postQ: {x: -0, y: -1.31130207e-06, z: .999999821, w: -.000246107549}
+        length: .16114153
+        modified: 1
+    - boneName: char_ethan_Neck
+      humanName: Neck
+      limit:
+        min: {x: 0, y: 0, z: -45}
+        max: {x: 0, y: 0, z: 45}
+        value: {x: .0995407104, y: 0, z: .0497703552}
+        preQ: {x: -2.38418565e-07, y: 1.16229046e-06, z: -.985835731, w: -.167713985}
+        postQ: {x: -0, y: -1.2218951e-06, z: .99929285, w: .0376019441}
+        length: .124425925
         modified: 1
     - boneName: char_ethan_Head
       humanName: Head
       limit:
         min: {x: -40, y: -40, z: -40}
         max: {x: 40, y: 40, z: 40}
-        value: {x: .112631306, y: 0, z: .056315653}
+        value: {x: .0995407104, y: 0, z: .0497703552}
         preQ: {x: -1.7881392e-07, y: -1.19209278e-06, z: .996159911, w: -.0875522122}
         postQ: {x: 2.98023224e-08, y: 1.16229057e-06, z: -.99999994, w: 2.98023224e-08}
-        length: .140789166
+        length: .124425925
         modified: 1
     - boneName: char_ethan_LeftShoulder
       humanName: LeftShoulder
@@ -649,30 +659,30 @@ ModelImporter:
       limit:
         min: {x: 0, y: -25, z: -20}
         max: {x: 0, y: 25, z: 20}
-        value: {x: .0297564175, y: 0, z: .0148782087}
-        preQ: {x: .443671584, y: .624596477, z: -.582470536, w: .271592915}
-        postQ: {x: 1.04308117e-06, y: .16955255, z: -.985521078, w: 2.08616243e-07}
-        length: .0371955298
+        value: {x: .0297564138, y: 0, z: .0148782069}
+        preQ: {x: .443671584, y: .624596536, z: -.582470536, w: .271592855}
+        postQ: {x: 1.10268593e-06, y: .16955255, z: -.985521078, w: 1.78813934e-07}
+        length: .0371955261
         modified: 1
     - boneName: char_ethan_LeftHandThumb2
       humanName: Left Thumb Intermediate
       limit:
         min: {x: 0, y: 0, z: -40}
         max: {x: 0, y: 0, z: 35}
-        value: {x: .0218482893, y: 0, z: .0109241446}
-        preQ: {x: -.0262720864, y: .106116161, z: -.968621552, w: -.223206967}
-        postQ: {x: -5.15580177e-06, y: .160181671, z: -.987087488, w: 5.80400229e-06}
-        length: .0273103695
+        value: {x: .0218482874, y: 0, z: .0109241437}
+        preQ: {x: -.0262720175, y: .106116198, z: -.968621552, w: -.223207012}
+        postQ: {x: -5.15580177e-06, y: .160181701, z: -.987087488, w: 5.73694706e-06}
+        length: .0273103677
         modified: 1
     - boneName: char_ethan_LeftHandThumb3
       humanName: Left Thumb Distal
       limit:
         min: {x: 0, y: 0, z: -40}
         max: {x: 0, y: 0, z: 35}
-        value: {x: .0163862146, y: 0, z: .00819310732}
-        preQ: {x: -.0302634034, y: .105047449, z: -.976362169, w: -.18645671}
-        postQ: {x: -.00604945421, y: .160066947, z: -.98638314, w: .0372826196}
-        length: .0204827767
+        value: {x: .0163862128, y: 0, z: .00819310639}
+        preQ: {x: -.0302633736, y: .105047435, z: -.976362169, w: -.18645677}
+        postQ: {x: -.00604945421, y: .160067022, z: -.9863832, w: .0372825824}
+        length: .0204827748
         modified: 1
     - boneName: char_ethan_LeftHandIndex1
       humanName: Left Index Proximal
@@ -1222,7 +1232,7 @@ ModelImporter:
       transformModified: 1
     - name: char_ethan_LeftHandThumb1
       position: {x: -.0495908, y: .0247627664, z: -.0439720005}
-      rotation: {x: .5783571, y: -.325209498, z: .209278539, w: .718292654}
+      rotation: {x: .578357041, y: -.325209469, z: .209278524, w: .718292594}
       scale: {x: .999999166, y: 1.00000024, z: 1.00000036}
       transformModified: 1
     - name: char_ethan_LeftHandThumb2

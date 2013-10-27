@@ -50,7 +50,7 @@ public class MiscUtils : MonoBehaviour
 	
 	
 	
-	public static void PlaceDummyObject( string name, Vector3 pos )
+	public static GameObject PlaceDummyObject( string name, Vector3 pos )
 	{
 		GameObject dummyObject = null;
 		
@@ -65,6 +65,8 @@ public class MiscUtils : MonoBehaviour
 		}
 		
 		dummyObject.transform.position = pos;
+		
+		return dummyObject;
 	}
 
 }

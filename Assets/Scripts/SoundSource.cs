@@ -57,7 +57,7 @@ public class SoundSource : MonoBehaviour
 			return;
 		
 		if ( clips.Length > 0 )
-			audio.clip = clips [ Random.Range (0, clips.Length) ];
+			audio.clip = clips [ Random.Range (0, clips.Length-1) ];
 		audio.pitch = Singletons.timeManager.timeWarp;
 		audio.Play ();
 	}

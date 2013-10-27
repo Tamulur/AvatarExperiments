@@ -41,9 +41,9 @@ public class HandsController : MonoBehaviour
         animator = transform.parent.GetComponent<Animator>();
 		animator.gameObject.AddComponent<IKCaller>().delegateOnAnimatorIK = OnAnimatorIK;
 		
-		Transform avatarTransform = transform.parent;
-		leftHand.InitializeForNewCharacter( avatarTransform, animator );
-		rightHand.InitializeForNewCharacter( avatarTransform, animator );
+		CameraAnchor cameraAnchor = transform.parent.Find("CameraAnchor").GetComponent<CameraAnchor>();
+		leftHand.InitializeForNewCharacter( animator, cameraAnchor );
+		rightHand.InitializeForNewCharacter( animator, cameraAnchor );
 	}
 	
 	
@@ -62,7 +62,7 @@ public class HandsController : MonoBehaviour
 	            float controllerDistance = Vector3.Distance( leftHand.baseControllerPosition, rightHand.baseControllerPosition );
 	            float avatarHandsDistance = Vector3.Distance( leftHand.initialGlobalPosition, rightHand.initialGlobalPosition );
 	
-	            leftHand.scale = rightHand.scale = avatarHandsDistance / controllerDistance;
+	            leftHand.scale = rightHand.scale = avatarHandsDistance / (animator.transform.localScale.x * controllerDistance);
 				
 				useControllersAsTargets = true;
 			}
