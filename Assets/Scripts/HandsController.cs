@@ -5,8 +5,9 @@ public class HandsController : MonoBehaviour
 {
     #region fields
         
+		public bool areHandsCalibrated { get; private set; }
+	
         Animator animator; 
-		bool areHandsCalibrated;
         HydraHand leftHand;
         HydraHand rightHand;
 	
@@ -24,12 +25,10 @@ public class HandsController : MonoBehaviour
 
 
 	
-	public void Deactivate()
+	public void Dispossess()
 	{
-		Destroy( animator.gameObject.GetComponent<IKCaller>() );
-		
-		leftHand.Deactivate();
-		rightHand.Deactivate();
+		leftHand.Dispossess();
+		rightHand.Dispossess();
 		
 		animator = null;
 	}
@@ -39,7 +38,6 @@ public class HandsController : MonoBehaviour
 	public void InitializeForNewCharacter()
 	{
         animator = transform.parent.GetComponent<Animator>();
-		animator.gameObject.AddComponent<IKCaller>().delegateOnAnimatorIK = OnAnimatorIK;
 		
 		CameraAnchor cameraAnchor = transform.parent.Find("CameraAnchor").GetComponent<CameraAnchor>();
 		leftHand.InitializeForNewCharacter( animator, cameraAnchor );
@@ -48,7 +46,7 @@ public class HandsController : MonoBehaviour
 	
 	
 	
-    void OnAnimatorIK()
+    public void OnAnimatorIK()
     {
 	    SixenseInput.Controller leftController = SixenseInput.GetController( SixenseHands.LEFT );
 		bool useControllersAsTargets = false;
@@ -79,8 +77,8 @@ public class HandsController : MonoBehaviour
 		
 		if ( areHandsCalibrated )
 		{
-			leftHand.UpdateIK( useControllersAsTargets );
-		    rightHand.UpdateIK( useControllersAsTargets );
+			leftHand.OnAnimatorIK( useControllersAsTargets );
+		    rightHand.OnAnimatorIK( useControllersAsTargets );
 		}
 	}
 

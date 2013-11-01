@@ -14,6 +14,7 @@ public class PossessionController : MonoBehaviour
 		GameObject characterInGhostFocus;
 	
 		HandsController handsController;
+		FeetController feetController;
 		HeadController headController;
 		MotionController motionController;
 		OVRCameraController ovrCameraController;
@@ -24,6 +25,13 @@ public class PossessionController : MonoBehaviour
 		List<Transform> characterCameraAnchorTransforms = new List<Transform>();
 		TriggerSolidColor[] materialTriggers;
 		HashSet<TriggerSolidColor> ownTriggerColors = new HashSet<TriggerSolidColor>();
+	
+		enum HydraMode
+		{
+			Hands,
+			Feet
+		}
+		HydraMode hydraMode = HydraMode.Hands;
 	
 		enum State {
 			InCharacter,
@@ -40,6 +48,7 @@ public class PossessionController : MonoBehaviour
 		ovrCameraControllerTransform = ovrCameraController.transform;
 		headController = GetComponent<HeadController>();
 		handsController = GetComponent<HandsController>();
+		feetController = GetComponent<FeetController>();
 		motionController = GetComponent<MotionController>();
 		swooshSound = ovrCameraControllerTransform.Find("SwooshSound").GetComponent<AudioSource>();
 		
@@ -100,6 +109,29 @@ public class PossessionController : MonoBehaviour
 	}
 	
 	
+	
+	void CheckHydraModeButtons()
+	{
+		SixenseInput.Controller leftController = SixenseInput.GetController( SixenseHands.LEFT );
+		if ( leftController != null )
+		{
+			if (leftController.GetButtonDown( SixenseButtons.ONE ))
+			{
+				switch ( hydraMode )
+				{
+					case HydraMode.Hands:
+						hydraMode = HydraMode.Feet;
+						break;
+					case HydraMode.Feet:
+						feetController.Deactivate();
+						hydraMode = HydraMode.Hands;
+						break;
+				}
+			}
+		}
+	}
+	
+	
 		
 	void Dispossess()
 	{
@@ -107,9 +139,12 @@ public class PossessionController : MonoBehaviour
 		transform.parent = null;
 		ovrCameraController.FollowOrientation = ovrCameraControllerTransform;
 		
-		headController.Deactivate();
-		handsController.Deactivate();
-		motionController.Deactivate();
+		Destroy( avatarTransform.GetComponent<IKCaller>() );
+		
+		headController.Dispossess();
+		handsController.Dispossess();
+		feetController.Dispossess();
+		motionController.Dispossess();
 		
 		ownTriggerColors.Clear();
 	}
@@ -148,6 +183,15 @@ public class PossessionController : MonoBehaviour
 	
 	
 	
+	void OnAnimatorIK()
+	{
+		if ( hydraMode == HydraMode.Hands )
+			handsController.OnAnimatorIK();
+		else if ( hydraMode == HydraMode.Feet )
+			feetController.OnAnimatorIK();
+	}
+	
+	
 	
 	void Possess( GameObject avatarGO )
 	{
@@ -162,8 +206,11 @@ public class PossessionController : MonoBehaviour
 		transform.localPosition = Vector3.zero;
 		transform.localRotation = Quaternion.identity;
 		
+		avatarTransform.gameObject.AddComponent<IKCaller>().delegateOnAnimatorIK = OnAnimatorIK;
+		
 		headController.InitializeForNewCharacter( avatarTransform );
 		handsController.InitializeForNewCharacter();
+		feetController.InitializeForNewCharacter( avatarTransform );
 		motionController.InitializeForNewCharacter ( avatarGO );
 		
 		foreach ( TriggerSolidColor triggerSolidColor in avatarTransform.GetComponentsInChildren<TriggerSolidColor>() )
@@ -209,6 +256,7 @@ public class PossessionController : MonoBehaviour
 		if ( isGhostModeActive )
 			UpdateCharacterFocus();
 		
+		CheckHydraModeButtons();
 		CheckGhostModeButtons();
 	}
 	

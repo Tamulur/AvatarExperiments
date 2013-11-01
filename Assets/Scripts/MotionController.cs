@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class MotionController : MonoBehaviour
@@ -29,7 +29,7 @@ public class MotionController : MonoBehaviour
 	
 	
 	
-	public void Deactivate()
+	public void Dispossess()
 	{
 		animator.SetFloat("speed", 0);
 		animator = null;

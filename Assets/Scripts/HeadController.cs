@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class HeadController : MonoBehaviour
@@ -30,7 +30,7 @@ public class HeadController : MonoBehaviour
 
 	
 	
-	public void Deactivate()
+	public void Dispossess()
 	{
 		ovrControllerTransform.parent = transform;
 		anchorBoneTransform = null;

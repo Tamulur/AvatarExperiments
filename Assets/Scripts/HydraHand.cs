@@ -27,7 +27,7 @@ class HydraHand
 
 
 	
-	public void Deactivate()
+	public void Dispossess()
 	{
 		oldScale = cameraAnchor.avatarScale / avatarTransform.localScale.x;
 	}
@@ -100,7 +100,7 @@ class HydraHand
 	
 	
 	
-    public void UpdateIK( bool useController = true )
+    public void OnAnimatorIK( bool useController = true )
     {
 		Vector3 targetPos = Vector3.zero;
 		Quaternion targetRot = Quaternion.identity;
